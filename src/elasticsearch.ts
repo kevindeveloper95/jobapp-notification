@@ -10,10 +10,10 @@ const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationE
 
 const elasticSearchClient = new Client({
   node: `${config.ELASTIC_SEARCH_URL}`,
-  auth: {
+    auth: {
     username: 'elastic', // Usuario por defecto
     password: 'admin1234' // Cambia esto
-  },
+  }, 
 });
 
 export async function checkConnection(): Promise<void> {
