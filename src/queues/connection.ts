@@ -7,7 +7,11 @@ const log: Logger = winstonLogger(`${config.ELASTIC_SEARCH_URL}`, 'notificationQ
 
 async function createConnection(): Promise<Channel | undefined> {
   try {
-    const connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`);
+    const connection = await client.connect(`${config.RABBITMQ_ENDPOINT}`,{
+      clientProperties: {
+        connection_name: 'notification-service' // Aquí pones el nombre que quieras
+      }
+    });
     const channel = await connection.createChannel();
     log.info('Notification server connected to queue successfully...');
     closeConnection(channel, connection);
