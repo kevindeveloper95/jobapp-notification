@@ -1,5 +1,161 @@
 # Notification Service
 
+## Description
+The **Notification Service** is a microservice responsible for managing all email notifications within the JobApp application. This service processes message queues and sends personalized emails using predefined templates.
+
+## Technologies Used / Tecnologías Utilizadas
+
+- **Node.js** with **TypeScript**
+- **Express.js** - Web framework
+- **RabbitMQ** - Message queue system
+- **Nodemailer** - Email sending
+- **Email Templates** - Email template management
+- **Elasticsearch** - Logging and search
+- **Winston** - Logging system
+- **Jest** - Testing framework
+- **PM2** - Process manager for production
+
+## Main Features / Características Principales
+
+### 📧 Email Management
+The service handles different types of email notifications:
+
+- **Email verification** (`verifyEmail`)
+- **Password recovery** (`forgotPassword`)
+- **Password change confirmation** (`resetPasswordSuccess`)
+- **Job offers** (`offer`)
+- **Placed orders** (`orderPlaced`)
+- **Order receipts** (`orderReceipt`)
+- **Delivered orders** (`orderDelivered`)
+- **Order extensions** (`orderExtension`)
+- **Extension approvals** (`orderExtensionApproval`)
+
+### 🔄 Queue System
+- Integration with **RabbitMQ** for asynchronous message processing
+- Email consumer that processes notification queues
+- Connection management and automatic reconnection
+
+### 📊 Monitoring and Logging
+- Integration with **Elasticsearch** for centralized logging
+- Structured logging with **Winston**
+- Support for **Elastic APM** for performance monitoring
+
+## Project Structure / Estructura del Proyecto
+
+```
+notification-service/
+├── src/
+│   ├── app.ts              # Application entry point
+│   ├── server.ts           # Express server configuration
+│   ├── config.ts           # Service configuration
+│   ├── routes.ts           # Route definitions
+│   ├── helpers.ts          # Helper functions
+│   ├── elasticsearch.ts    # Elasticsearch configuration
+│   ├── emails/             # Email templates
+│   │   ├── verifyEmail/
+│   │   ├── forgotPassword/
+│   │   ├── orderPlaced/
+│   │   └── ...
+│   └── queues/             # Queue management
+│       ├── connection.ts   # RabbitMQ connection
+│       ├── email.consumer.ts # Email consumer
+│       └── mail.transport.ts # Email transport configuration
+├── tools/                  # Build tools
+├── coverage/              # Test coverage reports
+├── Dockerfile             # Docker image for production
+├── Dockerfile.dev         # Docker image for development
+└── package.json           # Dependencies and scripts
+```
+
+## Environment Variables / Variables de Entorno
+
+The service requires the following environment variables:
+
+```env
+NODE_ENV=development|production
+CLIENT_URL=<CLIENT_URL>
+SENDER_EMAIL=<SENDER_EMAIL>
+SENDER_EMAIL_PASSWORD=<EMAIL_PASSWORD>
+RABBITMQ_ENDPOINT=<RABBITMQ_URL>
+ELASTIC_SEARCH_URL=<ELASTICSEARCH_URL>
+ENABLE_APM=0|1
+ELASTIC_APM_SERVER_URL=<APM_URL>
+ELASTIC_APM_SECRET_TOKEN=<APM_TOKEN>
+```
+
+## Available Scripts / Scripts Disponibles
+
+### Development / Desarrollo
+```bash
+npm run dev          # Start server in development mode with hot reload
+npm run lint:check   # Check code with ESLint
+npm run lint:fix     # Automatically fix linting errors
+npm run prettier:check # Check code formatting
+npm run prettier:fix   # Format code automatically
+```
+
+### Production / Producción
+```bash
+npm run build        # Compile TypeScript and prepare assets
+npm start           # Start service with PM2 (5 instances)
+
+npm stop            # Stop all PM2 instances
+npm run delete      # Delete all PM2 instances
+```
+
+### Testing / Testing
+```bash
+npm test            # Run all tests with coverage
+```
+
+## Deployment / Despliegue
+
+### Docker
+The service includes Docker configuration:
+
+- **Dockerfile**: For production
+- **Dockerfile.dev**: For development
+
+### PM2
+In production, the service runs with PM2 in cluster mode (5 instances) for high availability.
+
+## Integration with Other Services / Integración con Otros Servicios
+
+This microservice integrates with:
+
+- **RabbitMQ**: To receive notification messages from other services
+- **Elasticsearch**: For centralized logging and search
+- **Email Provider**: For actual email sending
+- **Shared Library** (`@kevindeveloper95/jobapp-shared`): Shared utilities
+
+## Workflow / Flujo de Trabajo
+
+1. **Reception**: The service receives messages from other microservices through RabbitMQ
+2. **Processing**: The email consumer processes messages from the queue
+3. **Templating**: The appropriate email template is selected and processed
+4. **Sending**: The email is sent using Nodemailer
+5. **Logging**: Activity is logged in Elasticsearch for monitoring
+
+## Development / Desarrollo
+
+To contribute to service development:
+
+1. Install dependencies: `npm install`
+2. Configure environment variables
+3. Run in development mode: `npm run dev`
+4. Run tests: `npm test`
+5. Check linting: `npm run lint:check`
+
+## Versioning / Versionado
+
+Current version: **1.0.0**
+
+The service uses semantic versioning for release control.
+
+---
+
+# Notification Service
+
 ## Descripción
 El **Notification Service** es un microservicio encargado de gestionar todas las notificaciones por correo electrónico dentro de la aplicación JobApp. Este servicio procesa colas de mensajes y envía correos electrónicos personalizados utilizando plantillas predefinidas.
 
